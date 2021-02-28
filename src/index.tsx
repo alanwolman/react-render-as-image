@@ -7,7 +7,8 @@ export type IRenderAsImageProps = {
   children: React.ReactNode,
   width?: number | string,
   height?: number | string,
-  alt?: string
+  alt?: string,
+  format?: string
 }
 
 const initialState = { imageDataUrl: '' };
@@ -19,12 +20,34 @@ class RenderAsImage extends React.Component<IRenderAsImageProps> {
 
     componentDidMount = () => {
       if (this.myDiv) {
-        htmlToImage.toPng(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
-        .then(
-            (dataUrl) => {
-              this.setState({...this.state, imageDataUrl: dataUrl });
-            }
-        );
+        switch(this.props.format) {
+          case 'png':
+            htmlToImage.toPng(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
+            .then(
+                (dataUrl) => {
+                  this.setState({...this.state, imageDataUrl: dataUrl });
+                }
+            );
+          break;
+          case 'jpg':
+          case 'jpeg':
+            htmlToImage.toJpeg(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
+            .then(
+                (dataUrl) => {
+                  this.setState({...this.state, imageDataUrl: dataUrl });
+                }
+            );
+          break;
+          case 'svg':
+            htmlToImage.toSvg(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
+            .then(
+                (dataUrl) => {
+                  this.setState({...this.state, imageDataUrl: dataUrl });
+                }
+            );
+          break;
+
+        }
       }
     }
 
