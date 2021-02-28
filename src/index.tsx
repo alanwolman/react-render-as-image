@@ -31,7 +31,7 @@ class RenderAsImage extends React.Component<IRenderAsImageProps> {
           break;
           case 'jpg':
           case 'jpeg':
-            htmlToImage.toJpg(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
+            htmlToImage.toJpeg(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
             .then(
                 (dataUrl) => {
                   this.setState({...this.state, imageDataUrl: dataUrl });
