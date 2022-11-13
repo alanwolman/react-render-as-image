@@ -3,6 +3,7 @@
 A simple react HOC component to render child components in PNG.
 
 This can be useful for various reasons:
+
 - Allowing for elements created within a React page to be easily copied and shared in official company documents such as Word, Excel, etc.
 - Allow for items generated online to be easily copied for later reference.
 
@@ -29,12 +30,12 @@ import RenderAsImage, { IRenderAsImageProps } from 'react-render-as-image'
 To render React components as an image include the components as children of the RenderAsImage component as illustrated below:
 
 ```
-<ImageAsHtml height="500" alt="Hello World!">
+<RenderAsImage height="500" alt="Hello World!">
     <div>Hello World!</div>
-</ImageAsHtml>
+</RenderAsImage>
 ```
 
-NOTE: ImageAsHTML will only render the first child node - as such if you have multiple child nodes it will be necessary to enclose them in a containing div element.
+NOTE: RenderAsImage will only render the first child node - as such if you have multiple child nodes it will be necessary to enclose them in a containing div element.
 
 ## Available props
 
