@@ -1,39 +1,39 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import './styles.scss';
-import htmlToImage from 'html-to-image';
+import { toPng } from "html-to-image";
+import * as React from "react";
 
 export type IRenderAsImageProps = {
-  children: React.ReactNode,
-  width?: number | string,
-  height?: number | string,
-  alt?: string
+  children: React.ReactNode;
+  width?: number | string;
+  height?: number | string;
+  alt?: string;
+};
+
+export default function RenderAsImage({
+  children,
+  width,
+  height,
+  alt,
+}: IRenderAsImageProps) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [imgSrc, setImgSrc] = React.useState("");
+
+  React.useEffect(() => {
+    toPng(ref.current!)
+      .then(function (dataUrl) {
+        setImgSrc(dataUrl);
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
+  }, []);
+
+  return (
+    <>
+      {imgSrc !== "" ? (
+        <img src={imgSrc} height={height} width={width} alt={alt} />
+      ) : (
+        <div ref={ref}>{children}</div>
+      )}
+    </>
+  );
 }
-
-const initialState = { imageDataUrl: '' };
-type State = Readonly<typeof initialState>;
-
-class RenderAsImage extends React.Component<IRenderAsImageProps> {
-    private myDiv: HTMLDivElement | null;
-    readonly state: State = initialState;
-
-    componentDidMount = () => {
-      if (this.myDiv) {
-        htmlToImage.toPng(ReactDOM.findDOMNode(this.myDiv.firstElementChild) as HTMLElement)
-        .then(
-            (dataUrl) => {
-              this.setState({...this.state, imageDataUrl: dataUrl });
-            }
-        );
-      }
-    }
-
-    render = () => {
-      
-      return (this.state.imageDataUrl !== '')
-                ?  <img src={this.state.imageDataUrl} height={this.props.height} width={this.props.height} alt={this.props.alt}/> 
-                : <div ref={c => this.myDiv = c} ><div>{this.props.children}</div></div>;
-    }
-  };
-
-export default RenderAsImage;
